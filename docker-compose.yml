@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  sandbox-nzlidar:
+    container_name: sandbox-nzlidar
+    # for details go to https://github.com/dask/dask-docker
+    image: ghcr.io/dask/dask-notebook:2023.4.0-py3.9
+    env_file: .env
+    environment:
+      - USE_MAMBA=true
+      - EXTRA_APT_PACKAGES=vim
+      - EXTRA_CONDA_PACKAGES=gilknocker
+    ports:
+      - "8888:8888"
+      - "8787:8787"
+    restart: always
+    volumes:
+      - "./workspace:/home/jovyan"
+      - "../datastorage:/home/jovyan/datastorage"
+      - "./environment:/opt/app"
+    depends_on:
+      sandbox-nzlidar-postgres:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

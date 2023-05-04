@@ -1,0 +1,27 @@
+# YML file for setting up Python environment
+
+name: base
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python-dotenv
+  - lxml
+  - pandas
+  - geopandas
+  - rasterio
+  - python-pdal
+  - shapely
+  - psycopg2
+  - sqlalchemy<2.0  # v2.0 does not supported by some packages yet.
+  - geoalchemy2
+  - plotly
+  - scrapy
+  - pdal
+  - gdal
+  - pip:
+    - geofabrics>=0.10.7
+    - geovoronoi>=0.4.0
+    - geoapis>=0ta.3.1
+    # - bokeh>=2.4.2,<3  # for Dask dashboard
+prefix: 
