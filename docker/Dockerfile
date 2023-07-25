@@ -12,14 +12,13 @@ FROM ubuntu:jammy-20220815
 
 RUN apt-get update && apt-get install -y git vim
 
-COPY --chown=$uid:$gid --from=sandbox-conda /env /env
-RUN mkdir /etc/dask/
-COPY --chown=$uid:$gid config.yaml /etc/dask/
-
 ARG user=jovyan
 ARG uid=1000
 ARG gid=100
 RUN useradd -l -m -s /bin/bash -N -g $gid -u $uid $user
+COPY --chown=$uid:$gid --from=sandbox-conda /env /env
+RUN mkdir /etc/dask/
+COPY --chown=$uid:$gid config.yaml /etc/dask/
 
 ENV HOME=/home/$user \
     LC_ALL=C.UTF-8 \
