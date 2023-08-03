@@ -27,6 +27,7 @@ dependencies:
   - bokeh!=3.0.*,>=2.4.2  # for Dask dashboard
   - laspy
   - pip:
+    - laszip  # for vertical datum transference
     - geofabrics
     - geovoronoi
     - geoapis
