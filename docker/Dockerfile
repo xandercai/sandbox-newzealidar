@@ -10,7 +10,10 @@ ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
 FROM ubuntu:jammy-20220815
 
-RUN apt-get update && apt-get install -y git vim
+RUN apt-get update && \
+    apt-get install -y git vim tzdata && \
+    ln -fs /usr/share/zoneinfo/Pacific/Auckland /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
 
 ARG user=jovyan
 ARG uid=1000
