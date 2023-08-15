@@ -4,13 +4,13 @@
 distributed:
   version: 2
   logging:
-    distributed: info
-    distributed.client: warning
-    distributed.worker: critical
-    bokeh: error
+    # distributed: info
+    # distributed.client: warning
+    # distributed.worker: critical
+    bokeh: critical
     # http://stackoverflow.com/questions/21234772/python-tornado-disable-logging-to-stderr
     tornado: critical
-    tornado.application: error
+    tornado.application: critical
 
   scheduler:
     allowed-failures: 6     # number of retries before a task is considered bad
@@ -27,11 +27,11 @@ distributed:
     work-stealing: True     # workers should steal tasks from each other
     work-stealing-interval: 100ms  # Callback time for work stealing
     worker-saturation: 1.1 # Send this fraction of nthreads root tasks to workers
-    worker-ttl: "30 minutes" # like '60s'. Time to live for workers.  They must heartbeat faster than this
+    worker-ttl: null # like '60s'. Time to live for workers.  They must heartbeat faster than this
     pickle: True            # Is the scheduler allowed to deserialize arbitrary bytestrings
     preload: []             # Run custom modules with Scheduler
     preload-argv: []        # See https://docs.dask.org/en/latest/how-to/customize-initialization.html
-    unknown-task-duration: 500ms  # Default duration for all tasks with unknown durations ("15m", "2h")
+    unknown-task-duration: 1h  # Default duration for all tasks with unknown durations ("15m", "2h")
     default-task-durations:  # How long we expect function names to run ("1h", "1s") (helps for long tasks)
       rechunk-split: 1us
       split-shuffle: 1us
@@ -100,7 +100,7 @@ distributed:
     resources: {}           # Key: value pairs specifying worker resources.
     lifetime:
       duration: null        # Time after which to gracefully shutdown the worker
-      stagger: 0 seconds    # Random amount by which to stagger lifetimes
+      stagger: 1 seconds    # Random amount by which to stagger lifetimes
       restart: False        # Do we ressurrect the worker after the lifetime deadline?
 
     profile:
@@ -158,9 +158,9 @@ distributed:
       # All fractions are relative to each worker's memory_limit.
       transfer: 0.10  # fractional size of incoming data transfers where we start
                        # throttling incoming data transfers
-      target: 0.60     # fraction of managed memory where we start spilling to disk
-      spill: 0.70      # fraction of process memory where we start spilling to disk
-      pause: 0.80      # fraction of process memory at which we pause worker threads
+      target: 0.70     # fraction of managed memory where we start spilling to disk
+      spill: 0.80      # fraction of process memory where we start spilling to disk
+      pause: 0.90      # fraction of process memory at which we pause worker threads
       terminate: 0.95  # fraction of process memory at which we terminate the worker
 
       # Max size of the spill file on disk (e.g. "10 GB")
@@ -212,14 +212,14 @@ distributed:
 
   adaptive:
     interval: 1s         # Interval between scaling evaluations
-    target-duration: 5s  # Time an entire graph calculation is desired to take ("1m", "30m")
+    target-duration: 30m # Time an entire graph calculation is desired to take ("1m", "30m")
     minimum: 0           # Minimum number of workers
     maximum: .inf        # Maximum number of workers
-    wait-count: 3        # Number of times a worker should be suggested for removal before removing it
+    wait-count: 300      # Number of times a worker should be suggested for removal before removing it
 
   comm:
     retry:  # some operations (such as gathering data) are subject to re-tries with the below parameters
-      count: 0  # the maximum retry attempts. 0 disables re-trying.
+      count: 100  # the maximum retry attempts. 0 disables re-trying.
       delay:
          min: 1s  # the first non-zero delay between re-tries
          max: 20s  # the maximum delay between re-tries
@@ -240,7 +240,7 @@ distributed:
                                  # be transferred to UCX. Name
                                  # munging: key-name => UCX_KEY_NAME
     zstd:
-      level: 3      # Compression level, between 1 and 22.
+      level: 1      # Compression level, between 1 and 22.
       threads: 0    # Threads to use. 0 for single-threaded, -1 to infer from cpu count.
 
     timeouts:
