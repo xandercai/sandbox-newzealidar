@@ -32,7 +32,7 @@ services:
       - "./workspace:/home/jovyan"
       - "../datastorage:/home/jovyan/datastorage"
     depends_on:
-      lidar_postgres:
+      lidar_postgres_1:
         condition: service_healthy
     extra_hosts:
       - "host.docker.internal:host-gateway"
