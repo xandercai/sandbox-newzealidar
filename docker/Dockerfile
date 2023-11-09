@@ -10,10 +10,11 @@ ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
 FROM ubuntu:jammy-20220815
 
-RUN apt-get update && \
-    apt-get install -y git vim tzdata && \
-    ln -fs /usr/share/zoneinfo/Pacific/Auckland /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y git vim tzdata \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 ARG user=jovyan
 ARG uid=1000
@@ -24,7 +25,7 @@ COPY --chown=$uid:$gid --from=sandbox-conda /env /env
 # COPY --chown=$uid:$gid config.yaml /etc/dask/
 
 ENV HOME=/home/$user \
-    LC_ALL=C.UTF-8 \
+    TZ=Pacific/Auckland \
     SHELL=bash \
     GDAL_DRIVER_PATH=/env/lib/gdalplugins \
     PROJ_LIB=/env/share/proj \
