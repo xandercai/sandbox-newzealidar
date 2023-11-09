@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  lidar_postgres:
+  lidar_postgres_1:
     # Database to store all vector data, states, and links to raster data.
     image: postgis/postgis
-    container_name: cont_lidar_postgres
+    container_name: cont_lidar_postgres_1
     restart: always
     ports:
       - "${POSTGRES_PORT}:5432"
@@ -15,10 +15,10 @@ services:
     healthcheck:
       test: pg_isready -h 127.0.0.1 -U $POSTGRES_USER -d $POSTGRES_DB
 
-  lidar_run:
+  lidar_run_1:
     # Performs analysis, computation, handles web requests, facilitates database interactions
-    image: lidar_run
-    container_name: cont_lidar_run
+    image: lidar_run_1
+    container_name: cont_lidar_run_1
     build:
       context: docker
       args:
@@ -26,8 +26,8 @@ services:
     env_file:
       - .env
     ports:
-      - "8787:8787"
-      - "8888:8888"
+      - "8786:8787"
+      - "8887:8888"
     volumes:
       - "./workspace:/home/jovyan"
       - "../datastorage:/home/jovyan/datastorage"

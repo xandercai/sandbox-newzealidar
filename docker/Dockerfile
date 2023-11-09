@@ -17,8 +17,8 @@ ARG uid=1000
 ARG gid=100
 RUN useradd -l -m -s /bin/bash -N -g $gid -u $uid $user
 COPY --chown=$uid:$gid --from=sandbox-conda /env /env
-RUN mkdir /etc/dask/
-COPY --chown=$uid:$gid config.yaml /etc/dask/
+# RUN mkdir /etc/dask/
+# COPY --chown=$uid:$gid config.yaml /etc/dask/
 
 ENV HOME=/home/$user \
     LC_ALL=C.UTF-8 \

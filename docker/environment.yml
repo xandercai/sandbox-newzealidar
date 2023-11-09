@@ -4,14 +4,13 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python
+  - python=3.11
   - pip
   - python-dotenv
   - pytest
   - lxml
   - pandas
   - geopandas
-  - rasterio
   - geojson
   - python-pdal
   - pdal
@@ -23,12 +22,8 @@ dependencies:
   - geoalchemy2
   - scrapy
   - dask
-  - leafmap
   - bokeh!=3.0.*,>=2.4.2  # for Dask dashboard
-  - laspy
   - pip:
-    - laszip  # for vertical datum transference
-    - geofabrics
-    - geovoronoi
-    - geoapis
+    - laspy[lazrs,laszip]  # for vertical datum transference
+    - geofabrics==1.0.0
 prefix:
